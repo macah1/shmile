@@ -7,6 +7,10 @@ yaml = require "yaml"
 dotenv = require "dotenv"
 exec = require("child_process").exec
 
+
+galleryFullSizeImages = true
+
+
 dotenv.load()
 console.log("printer is: #{process.env.PRINTER_ENABLED}")
 
@@ -28,14 +32,14 @@ exp.configure ->
 
 exp.get "/", (req, res) ->
   res.render "index",
-    title: "shmile"
+    title: "Photo Booth"
     extra_css: []
 
 exp.get "/gallery", (req, res) ->
   res.render "gallery",
-    title: "gallery!"
+    title: "Gallery!"
     extra_css: [ "photoswipe/photoswipe" ]
-    image_paths: PhotoFileUtils.composited_images(true)
+    image_paths: PhotoFileUtils.composited_images(true, galleryFullSizeImages)
 
 # FIXME/ahao This global state is no bueno.
 State = image_src_list: []
@@ -69,6 +73,9 @@ io.sockets.on "connection", (websocket) ->
   websocket.on "all_images", ->
 
   websocket.on "composite", ->
+
+    outfile = "";
+
     compositer = new ImageCompositor(State.image_src_list).init()
     compositer.emit "composite"
     compositer.on "composited", (output_file_path) ->
@@ -79,7 +86,11 @@ io.sockets.on "connection", (websocket) ->
       if process.env.PRINTER_ENABLED is "true"
         console.log "Printing image at ", output_file_path
         exec "lpr -o #{process.env.PRINTER_IMAGE_ORIENTATION} -o media=\"#{process.env.PRINTER_MEDIA}\" #{output_file_path}"
-      websocket.broadcast.emit "composited_image", PhotoFileUtils.photo_path_to_url(output_file_path)
+
+      outfile = PhotoFileUtils.photo_path_to_url(output_file_path)
+      #websocket.broadcast.emit "composited_image", PhotoFileUtils.photo_path_to_url(output_file_path)
+      websocket.broadcast.emit "composited_image", outfile
 
     compositer.on "generated_thumb", (thumb_path) ->
-      websocket.broadcast.emit "generated_thumb", PhotoFileUtils.photo_path_to_url(thumb_path)
+      websocket.broadcast.emit "generated_thumb", PhotoFileUtils.photo_path_to_url(thumb_path), outfile
+      #websocket.broadcast.emit "generated_thumb", PhotoFileUtils.photo_path_to_url(thumb_path)

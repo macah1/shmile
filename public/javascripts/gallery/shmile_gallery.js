@@ -18,14 +18,15 @@ socket.on('connect', function() {
 });
 
 // Everytime a new image is saved, notify and update the PhotoSwipe view.
-socket.on('generated_thumb', function(url) {
-  console.log('generated_thumb evt: '+url);
+socket.on('generated_thumb', function(url_thumb, url_gen) {
+  console.log('generated evt: ' + url_gen);
+  console.log('generated_thumb evt: ' + url_thumb);
 
   // A generated thumb means I need to add it to the slideshow.
   var a = $('<a/>')
-    .attr('href', url)
+    .attr('href', url_gen)
     .append(
-      $('<img />').attr('src', url).attr('alt', '')
+      $('<img />').attr('src', url_thumb).attr('alt', '')
     ).appendTo('ul#image-list');
 
   var src = gallery.settings.getImageSource(a[0]);

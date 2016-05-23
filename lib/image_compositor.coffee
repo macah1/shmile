@@ -13,9 +13,9 @@ TOTAL_WIDTH = IMAGE_WIDTH * 2 + IMAGE_PADDING * 3
 class ImageCompositor
   defaults:
     overlay_src: "public/images/overlay.png"
-#single strip overlay
+    #single strip overlay
     strips_overlay_src: "public/images/strips_overlay.png"
-#double strip overlay
+    #double strip overlay
     strips_overlay_src: "public/images/strips_double_overlay.png"
     tmp_dir: "public/temp"
     output_dir: "public/photos/generated"
@@ -59,9 +59,9 @@ class ImageCompositor
 
       doStrips = =>
         STRIP_PADDING = 20
-#single strip
+        #single strip
         stripsArgs = [ "-size", "225x630", "canvas:white" ]
-#double strip
+        #double strip
         stripsArgs = [ "-size", "450x630", "canvas:white" ]
         STRIP_SINGLE_WIDTH = 200
         STRIP_SINGLE_HEIGHT = 130
@@ -76,7 +76,7 @@ class ImageCompositor
           stripsArgs.push GEOMS[if i == 1 or i == 2 then 1 else 0]
           stripsArgs.push "-composite"
 
-# DOUBLE STRIP - 2nd column
+          # DOUBLE STRIP - 2nd column
           stripsArgs.push @img_src_list[i]
           stripsArgs.push "-gravity"
           stripsArgs.push GRAVITIES[Math.floor (i + 4)/2]
@@ -89,7 +89,7 @@ class ImageCompositor
         stripsArgs.push "Center"
         stripsArgs.push "-composite"
 
-# Rotate the strip clockwise 90 degress
+        # Rotate the strip clockwise 90 degress
         stripsArgs.push "-rotate"
         stripsArgs.push "90"
 
