@@ -5,3 +5,5 @@ temp
 public/photos/*jp*g
 public/photos/**/*jp*g
 public/components
+
+log/*.log
