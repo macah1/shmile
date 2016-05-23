@@ -3,8 +3,8 @@ exec = require("child_process").exec
 fs = require("fs")
 EventEmitter = require("events").EventEmitter
 
-IMAGE_HEIGHT = 400
-IMAGE_WIDTH = 600
+IMAGE_HEIGHT = 800
+IMAGE_WIDTH = 1200
 IMAGE_PADDING = 25
 TOTAL_HEIGHT = IMAGE_HEIGHT * 2 + IMAGE_PADDING * 3
 TOTAL_WIDTH = IMAGE_WIDTH * 2 + IMAGE_PADDING * 3
