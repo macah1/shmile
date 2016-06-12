@@ -30,7 +30,8 @@ class ImageCompositor
     emitter = new EventEmitter()
     emitter.on "composite", =>
       convertArgs = [ "-size", TOTAL_WIDTH + "x" + TOTAL_HEIGHT, "canvas:white" ]
-      utcSeconds = (new Date()).valueOf()
+      # utcSeconds = (new Date()).valueOf()
+      utcSeconds = String((new Date()).valueOf()).replace(/\//g, "_")
       IMAGE_GEOMETRY = "#{IMAGE_WIDTH}x#{IMAGE_HEIGHT}"
       OUTPUT_PATH = "#{@opts.tmp_dir}/out.jpg"
       OUTPUT_FILE_NAME = "#{utcSeconds}.jpg"
@@ -68,21 +69,20 @@ class ImageCompositor
         GRAVITIES = ["NorthWest", "SouthWest", "NorthEast", "SouthEast"]
         GEOMS = [STRIP_SINGLE_WIDTH + "x+12+12", STRIP_SINGLE_WIDTH + "x+12+" + (STRIP_SINGLE_HEIGHT + STRIP_PADDING)]
 
-        for i in [0..@img_src_list.length-1] by 1
-          stripsArgs.push @img_src_list[i]
-          stripsArgs.push "-gravity"
-          stripsArgs.push GRAVITIES[Math.floor i/2]
-          stripsArgs.push "-geometry"
-          stripsArgs.push GEOMS[if i == 1 or i == 2 then 1 else 0]
-          stripsArgs.push "-composite"
-
+#        for i in [0..@img_src_list.length-1] by 1
+#          stripsArgs.push @img_src_list[i]
+#          stripsArgs.push "-gravity"
+#          stripsArgs.push GRAVITIES[Math.floor i/2]
+#          stripsArgs.push "-geometry"
+#          stripsArgs.push GEOMS[if i == 1 or i == 2 then 1 else 0]
+#          stripsArgs.push "-composite"
           # DOUBLE STRIP - 2nd column
-          stripsArgs.push @img_src_list[i]
-          stripsArgs.push "-gravity"
-          stripsArgs.push GRAVITIES[Math.floor (i + 4)/2]
-          stripsArgs.push "-geometry"
-          stripsArgs.push GEOMS[if i == 1 or i == 2 then 1 else 0]
-          stripsArgs.push "-composite"
+#          stripsArgs.push @img_src_list[i]
+#          stripsArgs.push "-gravity"
+#          stripsArgs.push GRAVITIES[Math.floor (i + 4)/2]
+#          stripsArgs.push "-geometry"
+#          stripsArgs.push GEOMS[if i == 1 or i == 2 then 1 else 0]
+#          stripsArgs.push "-composite"
 
         stripsArgs.push @opts.strips_overlay_src
         stripsArgs.push "-gravity"

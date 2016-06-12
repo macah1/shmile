@@ -85,6 +85,7 @@ io.sockets.on "connection", (websocket) ->
       # Control this with PRINTER=true or PRINTER=false
       if process.env.PRINTER_ENABLED is "true"
         console.log "Printing image at ", output_file_path
+        console.log "lpr -o #{process.env.PRINTER_IMAGE_ORIENTATION} -o media=\"#{process.env.PRINTER_MEDIA}\" #{output_file_path}"
         exec "lpr -o #{process.env.PRINTER_IMAGE_ORIENTATION} -o media=\"#{process.env.PRINTER_MEDIA}\" #{output_file_path}"
 
       outfile = PhotoFileUtils.photo_path_to_url(output_file_path)
