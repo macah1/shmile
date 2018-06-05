@@ -6,11 +6,14 @@ fs = require "fs"
 yaml = require "yaml"
 dotenv = require "dotenv"
 exec = require("child_process").exec
+TelegramBotApi = require "node-telegram-bot-api"
 
 
 galleryFullSizeImages = true
 
+telegramToken = "XXXXXXX:XXXXXXXXX"
 
+groupId = "XXXXXXXXXXX"
 dotenv.load()
 console.log("printer is: #{process.env.PRINTER_ENABLED}")
 
@@ -21,6 +24,7 @@ ImageCompositor = require("./lib/image_compositor")
 
 exp = express()
 web = http.createServer(exp)
+bot = new TelegramBotApi(telegramToken, {polling:true})
 
 exp.configure ->
   exp.set "views", __dirname + "/views"
@@ -81,6 +85,17 @@ io.sockets.on "connection", (websocket) ->
     compositer.on "composited", (output_file_path) ->
       console.log "Finished compositing image. Output image is at ", output_file_path
       State.image_src_list = []
+
+      # Publish to Telegram
+      console.log "About to send photo via telegram...", groupId
+      console.log output_file_path
+
+      output_file_buffer = fs.readFileSync output_file_path
+      photoPromise = bot.sendPhoto groupId, output_file_buffer
+      console.log "Sent..."
+      photoPromise
+      photoPromise.then (photo) -> console.log(photo)
+      photoPromise.catch (err) -> console.log("FAILED: " + err)
 
       # Control this with PRINTER=true or PRINTER=false
       if process.env.PRINTER_ENABLED is "true"

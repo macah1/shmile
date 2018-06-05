@@ -40,6 +40,8 @@ class ImageCompositor
       FINAL_OUTPUT_THUMB_PATH	= "#{@opts.thumb_dir}/thumb_#{OUTPUT_FILE_NAME}"
       GEOMETRIES = [ IMAGE_GEOMETRY + "+" + IMAGE_PADDING + "+" + IMAGE_PADDING, IMAGE_GEOMETRY + "+" + (2 * IMAGE_PADDING + IMAGE_WIDTH) + "+" + IMAGE_PADDING, IMAGE_GEOMETRY + "+" + IMAGE_PADDING + "+" + (IMAGE_HEIGHT + 2 * IMAGE_PADDING), IMAGE_GEOMETRY + "+" + (2 * IMAGE_PADDING + IMAGE_WIDTH) + "+" + (2 * IMAGE_PADDING + IMAGE_HEIGHT) ]
 
+      console.log "--->"
+      console.log GEOMETRIES
       for i in [0..@img_src_list.length-1] by 1
         convertArgs.push @img_src_list[i]
         convertArgs.push "-geometry"
